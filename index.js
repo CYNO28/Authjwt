@@ -38,6 +38,23 @@ app.post("/login", async (req, res) => {
   );
   return res.send({ message: "user found", token });
 });
+
+app.get("/profile/:id",async(req,res)=>{
+    const {id}=req.params;
+    const token=req.headers["authorization"].split(" ")[1];
+   try{
+    const verification=jwt.verify(token,"dinesh");
+    if(verification){
+        
+        const user=await UserModel.findById(id);
+        return res.json(user);
+    }
+}
+catch{
+    return res.status(401).send("unauthorized");
+}
+})
+
 mongoose.connect("mongodb://127.0.0.1:27017/web17").then(() => {
   app.listen(8080, () => {
     console.log("Server is running on port 8080");
