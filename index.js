@@ -34,9 +34,10 @@ app.post("/login", async (req, res) => {
   }
   const token = jwt.sign(
     { username: user.username, age: user.age, id: user._id },
-    "dinesh"
+    "dinesh",{expiresIn: '1 hour'}
   );
-  return res.send({ message: "user found", token });
+  const refreshtoken=jwt.sign({},'dinesh',{expiresIn:'7 days'})
+  return res.send({ message: "user found", token,refreshtoken });
 });
 
 app.get("/profile/:id",async(req,res)=>{
